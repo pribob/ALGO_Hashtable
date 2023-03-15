@@ -29,6 +29,8 @@ def save_hashtable_to_file():
 
 if __name__ == '__main__':
 
+    table = HashTable()
+
     cmd = "quit"
     while cmd != "quit":
         cmd = input("Enter command to run: ")
@@ -54,8 +56,7 @@ if __name__ == '__main__':
             case _:
                 print("Command not supporter. Please try again")
 
-    print("Roland: "+str(hash("Roland")))
-    print("Nina: " + str(hash("Nina")))
+
 
 
 
