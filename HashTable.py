@@ -32,8 +32,10 @@ class HashTable:
         for index, element in enumerate(self.array[array_index]):
             # in case element exists <=> value is equal
             # change value
-            # CHANGE element [0] is dictionary with name: ..., wkn: ... ?
+
             if len(element)==2 and element[0]==key:
+                # comparable dictionary?
+                # array[hash][collisionindex][value-dictionary]["name]
                 self.array[array_index][index] = (key,value)
                 found = True
         if not found:
