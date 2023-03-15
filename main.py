@@ -1,6 +1,8 @@
 from HashTable import HashTable
 
-def add_stock():
+def add_stock(table,key,value):
+
+    table.__setitem__(key,value)
     print("Stock added to hashtable")
     return 0
 
@@ -27,18 +29,28 @@ def save_hashtable_to_file():
     print("Hashtable saved")
     return 0
 
+
 if __name__ == '__main__':
 
     table = HashTable()
 
-    cmd = "quit"
+    cmd_str = ""
+    cmd = ""
+    #cmd_list = []
+    cmd_value = []
     while cmd != "quit":
-        cmd = input("Enter command to run: ")
-        #TO-DO: add splicing -> command and arguments...
+        cmd_string = input("Enter command to run: ")
+        cmd = cmd_string.split()[0]
+        cmd_value = cmd_string.split()[1:]
+
         match cmd:
 
             case "add":
-                add_stock()
+                # check exactly 3 arguments: shortsign= key, name of stock, number of stock WKN
+                add_stock(table,cmd_value[0],{"name":cmd_value[1],"wkn":cmd_value[2]})
+                #for element in table.array:
+                #    if len(element)>0:
+                #        print(element[0][1]["wkn"])
             case "delete":
                 delete_stock()
             case "import":
@@ -54,7 +66,7 @@ if __name__ == '__main__':
             case "quit":
                 break
             case _:
-                print("Command not supporter. Please try again")
+                print(f"Command: {cmd} \n Argument: {cmd_value}")
 
 
 

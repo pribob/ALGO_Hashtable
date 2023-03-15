@@ -6,7 +6,8 @@
 
 class HashTable:
     def __init__(self):
-        self.MAX = 1217
+        # 1217. for testing 10
+        self.MAX = 10
         self.array = [[]for i in range(self.MAX)]
 
     def get_hash(self, key):
@@ -18,18 +19,20 @@ class HashTable:
         # 1217 is a primenumber greater than max amount of stocks.
         return hash_value % self.MAX
 
-    def __getitem__(self,key):
-        array_index = get_hash(self,key)
+    def __getitem__(self, key):
+        array_index = self.get_hash(key)
         for element in self.array[array_index]:
             if element[0] == key:
                 return element[1]
 
     def __setitem__(self,key,value):
         array_index = self.get_hash(key)
+        print(array_index)
         found = False
         for index, element in enumerate(self.array[array_index]):
             # in case element exists <=> value is equal
             # change value
+            # CHANGE element [0] is dictionary with name: ..., wkn: ... ?
             if len(element)==2 and element[0]==key:
                 self.array[array_index][index] = (key,value)
                 found = True
