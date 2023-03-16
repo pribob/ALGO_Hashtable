@@ -41,6 +41,7 @@ class HashTable:
         if not found:
             self.array[array_index].append( {"key":key,"values":value})
 
+
     def __delete__(self, key):
         array_index = self.get_hash(key)
         for index, element in enumerate(self.array[array_index]):
