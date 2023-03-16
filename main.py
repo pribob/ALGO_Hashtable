@@ -6,7 +6,8 @@ def add_stock(table,key,value):
     print("Stock added to hashtable")
     return 0
 
-def delete_stock():
+def delete_stock(table,key):
+    table.__delete__(key)
     print("Stock deleted from hashtable")
     return 0
 
@@ -48,11 +49,11 @@ if __name__ == '__main__':
             case "add":
                 # check exactly 3 arguments: shortsign= key, name of stock, number of stock WKN
                 add_stock(table,cmd_value[0],{"name":cmd_value[1],"wkn":cmd_value[2]})
-                #for element in table.array:
-                #    if len(element)>0:
-                #        print(element[0][1]["wkn"])
+                for element in table.array:
+                    print(element)
+
             case "delete":
-                delete_stock()
+                delete_stock(table,cmd_value[0])
             case "import":
                 import_data_of_stock()
             case "search":

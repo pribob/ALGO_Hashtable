@@ -42,7 +42,7 @@ class HashTable:
             self.array[array_index].append((key,value))
 
     def __delete__(self, key):
-        array_index = self.get_hash(self,key)
+        array_index = self.get_hash(key)
         for index, element in enumerate(self.array[array_index]):
             if element[0]==key:
                 del self.array[array_index][index]
