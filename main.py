@@ -1,5 +1,6 @@
 from HashTable import HashTable
 import csv
+from tabulate import tabulate
 
 def add_stock(table,key,value):
 
@@ -32,8 +33,17 @@ def import_data_of_stock(table,name):
         print("This stock you want to import data from was not added yet.")
     return 0
 
-def search_stock_in_hashtable():
-    print("Stock searched in hashtable")
+def search_stock_in_hashtable(table,key):
+    if table[key] is not None:
+        if "data" in table[key]:
+            print(tabulate([table[key]["data"][0]],headers=["Date","Open","High","Low","Close","Adj Close","Volume"]))
+
+        else:
+            print("Entry exists, but without data to show. Please use the import command.")
+
+    else:
+        print("Stock was not added yet. Please use the add command.")
+    #print("Stock searched in hashtable")
     return 0
 
 def plot_stock_curve():
@@ -74,7 +84,7 @@ if __name__ == '__main__':
             case "import":
                 import_data_of_stock(table,cmd_value[0])
             case "search":
-                search_stock_in_hashtable()
+                search_stock_in_hashtable(table,cmd_value[0])
             case "plot":
                 plot_stock_curve()
             case "load":
@@ -87,10 +97,7 @@ if __name__ == '__main__':
                 print(f"Command: {cmd} \n Argument: {cmd_value}")
 
 
-        #table["NN"]["data"]=data
-        #print(data)
-        #for element in table.array:
-        #    print(element)
+
 
 
 
