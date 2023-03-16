@@ -1,4 +1,5 @@
 from HashTable import HashTable
+import csv
 
 def add_stock(table,key,value):
 
@@ -11,8 +12,24 @@ def delete_stock(table,key):
     print("Stock deleted from hashtable")
     return 0
 
-def import_data_of_stock():
-    print("Imported data from stock")
+def import_data_of_stock(table,name):
+    data = []
+
+    if table[name]!= None:
+        try:
+            with open(f'./TestCSVData/{name}.csv', newline='') as test:
+                reader = csv.reader(test, delimiter=',', quotechar='|')
+                for index, row in enumerate(reader):
+                    if index == 0:
+                        continue
+
+                    data.append(row)
+            table[name]["data"]=data
+            print("Imported data from stock")
+        except FileNotFoundError:
+            print("Sorry the file you want to import data from doesnt exist in the specified directory.")
+    else:
+        print("This stock you want to import data from was not added yet.")
     return 0
 
 def search_stock_in_hashtable():
@@ -55,7 +72,7 @@ if __name__ == '__main__':
             case "delete":
                 delete_stock(table,cmd_value[0])
             case "import":
-                import_data_of_stock()
+                import_data_of_stock(table,cmd_value[0])
             case "search":
                 search_stock_in_hashtable()
             case "plot":
@@ -68,6 +85,14 @@ if __name__ == '__main__':
                 break
             case _:
                 print(f"Command: {cmd} \n Argument: {cmd_value}")
+
+
+        #table["NN"]["data"]=data
+        #print(data)
+        #for element in table.array:
+        #    print(element)
+
+
 
 
 

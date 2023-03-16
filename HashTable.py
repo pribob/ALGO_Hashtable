@@ -22,8 +22,8 @@ class HashTable:
     def __getitem__(self, key):
         array_index = self.get_hash(key)
         for element in self.array[array_index]:
-            if element[0] == key:
-                return element[1]
+            if element["key"] == key:
+                return element
 
     def __setitem__(self,key,value):
         array_index = self.get_hash(key)
