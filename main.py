@@ -1,6 +1,7 @@
 from HashTable import HashTable
 import csv
 from tabulate import tabulate
+import json
 
 def add_stock(table,key,value):
 
@@ -53,7 +54,15 @@ def load_hashtable_from_file():
     print("Hashtable loaded from file.")
     return 0
 
-def save_hashtable_to_file():
+def save_hashtable_to_file(table, filename):
+    with open(filename+'.json','x') as file:
+        for index,element in enumerate(table.array):
+            if len(element)!=0:
+                for subindex,entry in enumerate(element):
+                    file.write(f"({index,subindex}) " + json.dumps(entry) + '\n')
+
+
+
     print("Hashtable saved")
     return 0
 
@@ -90,7 +99,7 @@ if __name__ == '__main__':
             case "load":
                 load_hashtable_from_file()
             case "save":
-                save_hashtable_to_file()
+                save_hashtable_to_file(table,cmd_value[0])
             case "quit":
                 break
             case _:
