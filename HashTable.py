@@ -33,16 +33,16 @@ class HashTable:
             # in case element exists <=> value is equal
             # change value
 
-            if len(element)==2 and element[0]==key:
+            if element["key"] == key:
                 # comparable dictionary?
                 # array[hash][collisionindex][value-dictionary]["name]
-                self.array[array_index][index] = (key,value)
+                self.array[array_index][index] = {"key":key,"values":value}
                 found = True
         if not found:
-            self.array[array_index].append((key,value))
+            self.array[array_index].append( {"key":key,"values":value})
 
     def __delete__(self, key):
         array_index = self.get_hash(key)
         for index, element in enumerate(self.array[array_index]):
-            if element[0]==key:
+            if element["key"]==key:
                 del self.array[array_index][index]
