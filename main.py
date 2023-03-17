@@ -2,6 +2,9 @@ from HashTable import HashTable
 import csv
 from tabulate import tabulate
 import json
+from matplotlib import pyplot as plt
+from datetime import datetime as dt
+
 
 def add_stock(table,key,value):
 
@@ -47,7 +50,19 @@ def search_stock_in_hashtable(table,key):
 
     return 0
 
-def plot_stock_curve():
+def plot_stock_curve(table,key):
+    # stock stored ?
+    # data imported ?
+    # for i = 0 to 29 x-array = table.array[key][data][0] = Zeit
+    x = []
+    y = []
+    dataset = table[key]["data"]
+    for entry in dataset:
+        x.append(dt.strptime(entry[0],'%Y-%m-%d'))
+        y.append(float(entry[4]))
+    plt.plot(x,y)
+    plt.show()
+    # y-array = table.array[key][data][4] = close value of stock
     print("Plotted last 30 days of ")
 
 def load_hashtable_from_file(table,file):
@@ -102,7 +117,7 @@ if __name__ == '__main__':
             case "search":
                 search_stock_in_hashtable(table,cmd_value[0])
             case "plot":
-                plot_stock_curve()
+                plot_stock_curve(table,cmd_value[0])
             case "load":
                 load_hashtable_from_file(table,cmd_value[0])
             case "save":
