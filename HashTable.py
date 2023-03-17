@@ -47,3 +47,7 @@ class HashTable:
         for index, element in enumerate(self.array[array_index]):
             if element["key"]==key:
                 del self.array[array_index][index]
+
+    def print(self):
+        for element in self.array:
+            print(element)

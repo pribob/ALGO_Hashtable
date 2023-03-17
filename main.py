@@ -44,22 +44,33 @@ def search_stock_in_hashtable(table,key):
 
     else:
         print("Stock was not added yet. Please use the add command.")
-    #print("Stock searched in hashtable")
+
     return 0
 
 def plot_stock_curve():
     print("Plotted last 30 days of ")
 
-def load_hashtable_from_file():
+def load_hashtable_from_file(table,file):
+    with open (f'./{file}.json', 'r') as file:
+        data = json.load(file)
+    for element in data:
+        index,subindex = element["index"]
+        table.array[index].append(element["row"])
+
     print("Hashtable loaded from file.")
     return 0
 
 def save_hashtable_to_file(table, filename):
+    data = []
     with open(filename+'.json','x') as file:
         for index,element in enumerate(table.array):
             if len(element)!=0:
                 for subindex,entry in enumerate(element):
-                    file.write(f"({index,subindex}) " + json.dumps(entry) + '\n')
+                    json_data = {"index":[index,subindex],"row":entry}
+                    data.append(json_data)
+
+        json.dump(data,file,indent=6)
+
 
 
 
@@ -70,10 +81,8 @@ def save_hashtable_to_file(table, filename):
 if __name__ == '__main__':
 
     table = HashTable()
-
     cmd_str = ""
     cmd = ""
-    #cmd_list = []
     cmd_value = []
     while cmd != "quit":
         cmd_string = input("Enter command to run: ")
@@ -85,8 +94,6 @@ if __name__ == '__main__':
             case "add":
                 # check exactly 3 arguments: shortsign= key, name of stock, number of stock WKN
                 add_stock(table,cmd_value[0],{"name":cmd_value[1],"wkn":cmd_value[2]})
-                for element in table.array:
-                    print(element)
 
             case "delete":
                 delete_stock(table,cmd_value[0])
@@ -97,11 +104,13 @@ if __name__ == '__main__':
             case "plot":
                 plot_stock_curve()
             case "load":
-                load_hashtable_from_file()
+                load_hashtable_from_file(table,cmd_value[0])
             case "save":
                 save_hashtable_to_file(table,cmd_value[0])
             case "quit":
                 break
+            case "print":
+                table.print()
             case _:
                 print(f"Command: {cmd} \n Argument: {cmd_value}")
 
