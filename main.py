@@ -19,7 +19,7 @@ def delete_stock(table,key):
 
 def import_data_of_stock(table,name):
     data = []
-
+    # imports ALL the data of the file 'name.csv' in subfolder TestCSVData
     if table[name]!= None:
         try:
             with open(f'./TestCSVData/{name}.csv', newline='') as test:
@@ -38,8 +38,11 @@ def import_data_of_stock(table,name):
     return 0
 
 def search_stock_in_hashtable(table,key):
+    # if stock was added to table
     if table[key] is not None:
+        # if data was imported to added stock
         if "data" in table[key]:
+            # formatted output of the most recent data for specific stock
             print(tabulate([table[key]["data"][0]],headers=["Date","Open","High","Low","Close","Adj Close","Volume"]))
 
         else:
@@ -51,20 +54,21 @@ def search_stock_in_hashtable(table,key):
     return 0
 
 def plot_stock_curve(table,key):
-    # stock stored ?
-    # data imported ?
-    # for i = 0 to 29 x-array = table.array[key][data][0] = Zeit
-    x = []
-    y = []
-    dataset = table[key]["data"]
-    for entry in dataset:
-        x.append(dt.strptime(entry[0],'%Y-%m-%d'))
-        y.append(float(entry[4]))
-    plt.plot(x,y)
-    plt.show()
-    # y-array = table.array[key][data][4] = close value of stock
-    print("Plotted last 30 days of ")
+    # if stock was added to table
+    if table[key] is not None:
+        # if data for added stock was imported
+        if "data" in table[key]:
+            x = []
+            y = []
+            dataset = table[key]["data"]
+            for entry in dataset:
+                x.append(dt.strptime(entry[0],'%Y-%m-%d'))
+                y.append(float(entry[4]))
+            plt.plot(x,y)
+            plt.show()
 
+
+# loads stored hashtable. json format only.
 def load_hashtable_from_file(table,file):
     with open (f'./{file}.json', 'r') as file:
         data = json.load(file)
@@ -75,6 +79,7 @@ def load_hashtable_from_file(table,file):
     print("Hashtable loaded from file.")
     return 0
 
+# stores hashtable in a json file
 def save_hashtable_to_file(table, filename):
     data = []
     with open(filename+'.json','x') as file:
@@ -94,10 +99,13 @@ def save_hashtable_to_file(table, filename):
 
 
 if __name__ == '__main__':
-
+    # instance of Hashtable class
     table = HashTable()
+    # string for user input
     cmd_str = ""
+    # filtered command of user
     cmd = ""
+    # arguments for specific comment
     cmd_value = []
     while cmd != "quit":
         cmd_string = input("Enter command to run: ")
@@ -108,7 +116,10 @@ if __name__ == '__main__':
 
             case "add":
                 # check exactly 3 arguments: shortsign= key, name of stock, number of stock WKN
-                add_stock(table,cmd_value[0],{"name":cmd_value[1],"wkn":cmd_value[2]})
+                if len(cmd_value) == 3:
+                    add_stock(table,cmd_value[0],{"name":cmd_value[1],"wkn":cmd_value[2]})
+                else:
+                    print("Wrong number of arguments: <add> <shortsign> <name> <wkn>")
 
             case "delete":
                 delete_stock(table,cmd_value[0])
@@ -127,7 +138,7 @@ if __name__ == '__main__':
             case "print":
                 table.print()
             case _:
-                print(f"Command: {cmd} \n Argument: {cmd_value}")
+                print("Command not available. Please enter valid command.")
 
 
 
