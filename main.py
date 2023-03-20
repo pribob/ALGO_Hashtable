@@ -73,8 +73,8 @@ def load_hashtable_from_file(table,file):
     with open (f'./{file}.json', 'r') as file:
         data = json.load(file)
     for element in data:
-        index,subindex = element["index"]
-        table.array[index].append(element["row"])
+        index = element["index"]
+        table.array[index] = element["row"]
 
     print("Hashtable loaded from file.")
     return 0
@@ -84,10 +84,9 @@ def save_hashtable_to_file(table, filename):
     data = []
     with open(filename+'.json','x') as file:
         for index,element in enumerate(table.array):
-            if len(element)!=0:
-                for subindex,entry in enumerate(element):
-                    json_data = {"index":[index,subindex],"row":entry}
-                    data.append(json_data)
+            if element is not None:
+                json_data = {"index":index,"row":element}
+                data.append(json_data)
 
         json.dump(data,file,indent=6)
 

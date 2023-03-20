@@ -3,7 +3,7 @@ class HashTable:
     def __init__(self):
 
         self.MAX = 10 #2003. 10 for testing purposes
-        self.array = [[]for i in range(self.MAX)]
+        self.array = [None for i in range(self.MAX)]
 
     def get_hash(self, key):
         hash_value = 0
@@ -17,30 +17,59 @@ class HashTable:
         #get hash
         array_index = self.get_hash(key)
         #if hash had has collisions, look for key
-        for element in self.array[array_index]:
-            if element["key"] == key:
-                return element
+        probing_offset = 0
+        found = False
+        while not found:
+            new_index = (array_index+(probing_offset**2))%self.MAX
+            if self.array[new_index]["key"] == key:
+                found = True
+                return self.array[new_index]
+            elif self.array[new_index] is None:
+                return None
+            else:
+                probing_offset += 1
+
 
     def __setitem__(self,key,value):
         #get hash
         array_index = self.get_hash(key)
-        print(array_index)
-        found = False
-        for index, element in enumerate(self.array[array_index]):
-            # in case element exists only change the value
-            if element["key"] == key:
-                self.array[array_index][index] = {"key":key,"values":value}
-                found = True
-        if not found:
-            # value doesnt exist, add it to list
-            self.array[array_index].append( {"key":key,"values":value})
+        probing_index = 1
+        stop_probing = False
+        # spot is empty
+        if self.array[array_index]==None or self.array[array_index]["key"] == "Sentinel":
+            self.array[array_index] = {"key":key,"values":value}
+        # key is same, only change data
+        elif self.array[array_index]["key"]==key:
+            self.array[array_index]["values"]=value
+        else:
+        #quadratic probing
+            while not stop_probing:
+                new_index = (array_index+(probing_index**2))%self.MAX
+                # empty spot found
+                if self.array[new_index]==None or self.array[new_index]["key"]=="Sentinel":
+                    stop_probing = True
+                    self.array[new_index] = {"key":key,"values":value}
+                else:
+                    probing_index += 1
 
 
     def __delete__(self, key):
         array_index = self.get_hash(key)
-        for index, element in enumerate(self.array[array_index]):
-            if element["key"]==key:
-                del self.array[array_index][index]
+        probing_offset = 0
+        found = False
+        while not found:
+            new_index = (array_index + (probing_offset ** 2)) % self.MAX
+            if self.array[new_index]["key"] == key:
+                found = True
+                #del self.array[new_index]
+                self.array[new_index]["key"] = "Sentinel"
+                del self.array[new_index]["values"]
+            elif self.array[new_index] is None:
+                print("Element does not exist.")
+                return None
+            else:
+                probing_offset += 1
+
 
     # for testing purposes
     def print(self):
